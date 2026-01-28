@@ -1,0 +1,42 @@
+1 - Run LocalStack
+
+docker run -d \
+  --name localstack \
+  -p 4566:4566 \
+  -p 4571:4571 \
+  localstack/localstack
+
+2 - Test
+
+curl http://localhost:4566/health
+aws --endpoint-url http://localhost:4566 s3 ls
+
+3 - LocalStack with Terraform
+
+provider.tf
+
+provider "aws" {
+  region                      = "us-east-1"
+  access_key                  = "test"
+  secret_key                  = "test"
+  skip_credentials_validation = true
+  skip_metadata_api_check     = true
+  skip_requesting_account_id  = true
+
+  endpoints {
+    ec2 = "http://localhost:4566"
+  }
+}
+
+4 - Run Terraform
+
+export AWS_ACCESS_KEY_ID=test
+export AWS_SECRET_ACCESS_KEY=test
+export AWS_DEFAULT_REGION=us-east-1
+terraform init
+terraform plan
+terraform apply
+
+5 - Clean up
+
+terraform destroy
