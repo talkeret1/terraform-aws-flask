@@ -1,0 +1,12 @@
+# Terraform cache files
+terraform/.terraform
+terraform/.terraform.lock.hcl
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+
+# LocalStack
+# localstack/
+
+# MacOS files
+.DS_Store
+
